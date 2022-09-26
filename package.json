@@ -5,5 +5,8 @@
   "main": "index.js",
   "repository": "https://github.com/julianallenderussek/hardhat_voting.git",
   "author": "Julian Allende Russek <jallende@bu.edu>",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "hardhat": "^2.11.2"
+  }
 }
