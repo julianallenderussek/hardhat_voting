@@ -1,0 +1,9 @@
+{
+  "name": "hardhat_voting",
+  "version": "1.0.0",
+  "description": "Simple Voting Smart Contract",
+  "main": "index.js",
+  "repository": "https://github.com/julianallenderussek/hardhat_voting.git",
+  "author": "Julian Allende Russek <jallende@bu.edu>",
+  "license": "MIT"
+}
