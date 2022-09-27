@@ -6,40 +6,70 @@ contract VotingTokenERC20 {
     string public constant name = "VotingBasic";
     string public constant symbol = "VTK";
     uint8 public constant decimals = 18;
-    // struc Candidate {}
-    // Candidates [];
-    // Votes [];
-    // timestamp when the electio starts 
-    // candidates (can this be a enum)
-
-    struct Vote {
-        address owner;
-        string candidate;
-        uint256 timestamp; 
-    } 
+    uint public constant electionEnd = 0;
+    string[] public candidates;
 
     event Approval(address indexed tokenOwner, address indexed spender, uint tokens);
     event Transfer(address indexed from, address indexed to, uint tokens);
+    event Vote(address indexed from);
 
     mapping(address => uint256) balances;
-    mapping(address => mapping (address => Vote)) votes;
+    mapping(address => uint256) votes;
+    mapping(string => uint256) voteCounter;
     mapping(address => mapping (address => uint256)) allowed;
 
     uint256 totalSupply_;
 
     using SafeMath for uint256;
+    
 
-   constructor(uint256 total) {  
+   constructor(uint256 total, string[] memory _candidates) {  
         totalSupply_ = total;
         balances[msg.sender] = totalSupply_;
+        candidates = _candidates;
     }  
+
+    function vote(string memory candidateName) public returns (bool) {
+        require(balances[msg.sender] > votes[msg.sender] && balances[msg.sender] != 0);
+        if ( votes[msg.sender] < 1 ) {
+            votes[msg.sender] = 1;
+            voteCounter[candidateName] += 1;
+            emit Vote(msg.sender);
+        }
+        return true;
+    }
 
     function totalSupply() public view returns (uint256) {
 	    return totalSupply_;
     }
+
+    function getResults() public view returns (uint[] memory) {
+	    uint[] memory resultsArray; 
+        for (uint i = 0 ; i < candidates.length; i++) {
+            uint256 result = voteCounter[candidates[i]];
+            resultsArray[i] = result;
+        }
+        return resultsArray;
+    }
+
+    function getCandidates() public view returns (string [] memory) {
+	    return candidates;
+    }
+
+    function test(uint i) public view returns (string memory) {
+	    return candidates[i];
+    }
+
+    function test2(uint i) public view returns (uint) {
+	    return voteCounter[candidates[i]];
+    }
     
     function balanceOf(address tokenOwner) public view returns (uint) {
         return balances[tokenOwner];
+    }
+
+    function castedVotes(address tokenOwner) public view returns (uint) {
+        return votes[tokenOwner];
     }
 
     function transfer(address receiver, uint numTokens) public returns (bool) {
