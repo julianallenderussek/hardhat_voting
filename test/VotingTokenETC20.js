@@ -29,7 +29,12 @@ describe("Voting Token contract", async function () {
       const newValue = newOwnerBalance.toNumber();
       
       expect(prevValue).to.equal(newValue + 1);
+    });
 
+    it("AddressOne balance got updated", async function () {
+      const newBalance = await hardhatToken.balanceOf(addr1.address)
+      const result = newBalance.toNumber();
+      expect(result).to.equal(1);
     });
 });
 
