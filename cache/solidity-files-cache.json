@@ -2,8 +2,8 @@
   "_format": "hh-sol-cache-2",
   "files": {
     "/workspace/hardhat_voting/contracts/VotingTokenERC20.sol": {
-      "lastModificationDate": 1664412328464,
-      "contentHash": "e41b000f4b0cdc9c354b215ad0bbd851",
+      "lastModificationDate": 1664413302487,
+      "contentHash": "f297c51029def7837fe7acebaba25dec",
       "sourceName": "contracts/VotingTokenERC20.sol",
       "solcConfig": {
         "version": "0.8.17",

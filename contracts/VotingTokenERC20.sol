@@ -63,14 +63,6 @@ contract VotingTokenERC20 {
     function getCandidates() public view returns (string [] memory) {
 	    return candidates;
     }
-
-    function test(uint i) public view returns (string memory) {
-	    return candidates[i];
-    }
-
-    function test2(uint i) public view returns (uint) {
-	    return voteCounter[candidates[i]];
-    }
     
     function balanceOf(address tokenOwner) public view returns (uint) {
         return balances[tokenOwner];
@@ -86,16 +78,6 @@ contract VotingTokenERC20 {
         balances[receiver] = balances[receiver].add(numTokens);
         emit Transfer(msg.sender, receiver, numTokens);
         return true;
-    }
-
-    function approve(address delegate, uint numTokens) public returns (bool) {
-        allowed[msg.sender][delegate] = numTokens;
-        emit Approval(msg.sender, delegate, numTokens);
-        return true;
-    }
-
-    function allowance(address owner, address delegate) public view returns (uint) {
-        return allowed[owner][delegate];
     }
 
     function transferFrom(address owner, address buyer, uint numTokens) public returns (bool) {
