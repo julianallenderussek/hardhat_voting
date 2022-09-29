@@ -7,11 +7,9 @@ import "hardhat/console.sol";
 contract VotingTokenERC20 {
     string public constant name = "VotingBasic";
     string public constant symbol = "VTK";
-    //uint8 public constant decimals = 18;
     uint public constant electionEnd = 0;
     uint[] public results;
-    uint public numCandidates; 
-    string[] public candidates;
+    uint public numCandidates = 0; 
 
     event Approval(address indexed tokenOwner, address indexed spender, uint tokens);
     event Transfer(address indexed from, address indexed to, uint tokens);
@@ -19,25 +17,45 @@ contract VotingTokenERC20 {
 
     mapping(address => uint256) balances;
     mapping(address => uint256) votes;
-    mapping(string => uint256) voteCounter;
+    mapping(uint => uint256) voteCounter;
     mapping(address => mapping (address => uint256)) allowed;
+
+    struct Candidate{
+        uint id;
+        string name;
+        uint votes;
+    }
+
+    mapping (uint => Candidate) public candidates;
 
     uint256 totalSupply_;
 
     using SafeMath for uint256;
     
-    constructor(uint256 total, string[] memory _candidates) {  
+    constructor(uint256 total, string[] memory candidateNames) {  
             totalSupply_ = total;
             balances[msg.sender] = totalSupply_;
-            candidates = _candidates;
-            numCandidates = _candidates.length;
+            for (uint i = 0; i < candidateNames.length; i++) {
+                addCandidate(candidateNames[i]);
+            }
+    }
+
+    function addCandidate (string memory _name) private {
+        candidates[numCandidates] = Candidate(numCandidates, _name , 0);
+        numCandidates ++;
     }  
 
-    function vote(string memory candidateName) public returns (bool) {
+    function vote(string memory _nameCandidate) public returns (bool) {
         require(balances[msg.sender] > votes[msg.sender] && balances[msg.sender] != 0);
         if ( votes[msg.sender] < 1 ) {
-            votes[msg.sender] = 1;
-            voteCounter[candidateName] += 1;
+            for (uint i = 0; i < numCandidates; i++) {
+                string memory _name = candidates[i].name;
+                if (compare(_name, _nameCandidate)) {
+                    ++candidates[i].votes;
+                    votes[msg.sender] = 1;
+                }
+                
+            }
             emit Vote(msg.sender);
         }
         return true;
@@ -53,16 +71,30 @@ contract VotingTokenERC20 {
 
     function calculateResults() public {
         uint[3] memory newResults;   
-        for (uint i = 0 ; i < candidates.length; i++) {
-            uint result = voteCounter[candidates[i]];
-            newResults[i] = result;
+        for (uint i = 0 ; i < numCandidates; i++) {
+            
         }
         results = newResults;
     }
 
-    function getCandidates() public view returns (string [] memory) {
-	    return candidates;
+
+    function compare(string memory a, string memory b) public pure returns (bool){
+        return compareTwoStrings(a, b);
     }
+
+    function compareTwoStrings(string memory s1, string memory s2)  public pure returns (bool) {
+      return keccak256(abi.encodePacked(s1)) == keccak256(abi.encodePacked(s2));  
+    }
+
+    function getCandidates() public view returns (Candidate [] memory) {
+        Candidate[] memory id = new Candidate[](numCandidates);
+        for (uint i = 0; i < numCandidates; i++) {
+            Candidate storage candidate = candidates[i];
+            id[i] = candidate;
+        }
+        return id;
+    }
+    
     
     function balanceOf(address tokenOwner) public view returns (uint) {
         return balances[tokenOwner];
@@ -94,5 +126,4 @@ library SafeMath {
       assert(c >= a);
       return c;
     }
-
 }
