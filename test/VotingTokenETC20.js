@@ -20,7 +20,6 @@ describe("Voting Token contract", async function () {
         testData.arrCandidatesNames
       );
       await hardhatToken.deployed();
-      console.log(owner.address);
       ownerBalance = await hardhatToken.balanceOf(owner.address);
       expect(await hardhatToken.totalSupply()).to.equal(ownerBalance);
     });
@@ -73,6 +72,7 @@ describe("Voting Token contract", async function () {
     });
 
     it("Get results", async function () {
+      await hardhatToken.calculateResults()
       const result = await hardhatToken.getResults() 
       console.log(result);
     });

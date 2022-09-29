@@ -2,11 +2,15 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.17;
 
+import "hardhat/console.sol";
+
 contract VotingTokenERC20 {
     string public constant name = "VotingBasic";
     string public constant symbol = "VTK";
     uint8 public constant decimals = 18;
     uint public constant electionEnd = 0;
+    uint[] public results;
+    uint public numCandidates; 
     string[] public candidates;
 
     event Approval(address indexed tokenOwner, address indexed spender, uint tokens);
@@ -22,11 +26,11 @@ contract VotingTokenERC20 {
 
     using SafeMath for uint256;
     
-
    constructor(uint256 total, string[] memory _candidates) {  
         totalSupply_ = total;
         balances[msg.sender] = totalSupply_;
         candidates = _candidates;
+        numCandidates = _candidates.length;
     }  
 
     function vote(string memory candidateName) public returns (bool) {
@@ -44,12 +48,16 @@ contract VotingTokenERC20 {
     }
 
     function getResults() public view returns (uint[] memory) {
-	    uint[] memory resultsArray; 
+        return results;
+    }
+
+    function calculateResults() public {
+        uint[3] memory newResults;   
         for (uint i = 0 ; i < candidates.length; i++) {
-            uint256 result = voteCounter[candidates[i]];
-            resultsArray[i] = result;
+            uint result = voteCounter[candidates[i]];
+            newResults[i] = result;
         }
-        return resultsArray;
+        results = newResults;
     }
 
     function getCandidates() public view returns (string [] memory) {
