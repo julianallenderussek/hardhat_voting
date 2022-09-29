@@ -7,7 +7,7 @@ import "hardhat/console.sol";
 contract VotingTokenERC20 {
     string public constant name = "VotingBasic";
     string public constant symbol = "VTK";
-    uint8 public constant decimals = 18;
+    //uint8 public constant decimals = 18;
     uint public constant electionEnd = 0;
     uint[] public results;
     uint public numCandidates; 
@@ -26,11 +26,11 @@ contract VotingTokenERC20 {
 
     using SafeMath for uint256;
     
-   constructor(uint256 total, string[] memory _candidates) {  
-        totalSupply_ = total;
-        balances[msg.sender] = totalSupply_;
-        candidates = _candidates;
-        numCandidates = _candidates.length;
+    constructor(uint256 total, string[] memory _candidates) {  
+            totalSupply_ = total;
+            balances[msg.sender] = totalSupply_;
+            candidates = _candidates;
+            numCandidates = _candidates.length;
     }  
 
     function vote(string memory candidateName) public returns (bool) {
@@ -80,15 +80,6 @@ contract VotingTokenERC20 {
         return true;
     }
 
-    function transferFrom(address owner, address buyer, uint numTokens) public returns (bool) {
-        require(numTokens <= balances[owner]);    
-        require(numTokens <= allowed[owner][msg.sender]);
-        balances[owner] = balances[owner].sub(numTokens);
-        allowed[owner][msg.sender] = allowed[owner][msg.sender].sub(numTokens);
-        balances[buyer] = balances[buyer].add(numTokens);
-        emit Transfer(owner, buyer, numTokens);
-        return true;
-    }
 }
 
 library SafeMath { 
