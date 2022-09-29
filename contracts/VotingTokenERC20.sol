@@ -49,9 +49,9 @@ contract VotingTokenERC20 {
         require(balances[msg.sender] > votes[msg.sender] && balances[msg.sender] != 0);
         if ( votes[msg.sender] < 1 ) {
             for (uint i = 0; i < numCandidates; i++) {
-                string memory _name = candidates[i].name;
-                if (compare(_name, _nameCandidate)) {
-                    ++candidates[i].votes;
+                Candidate storage candidate = candidates[i];
+                if (compare(candidate.name, _nameCandidate)) {
+                    ++candidate.votes;
                     votes[msg.sender] = 1;
                 }
                 
@@ -70,7 +70,7 @@ contract VotingTokenERC20 {
     }
 
     function calculateResults() public {
-        uint[3] memory newResults;   
+        uint[numCandidates] memory newResults;   
         for (uint i = 0 ; i < numCandidates; i++) {
             
         }

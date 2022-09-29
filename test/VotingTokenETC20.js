@@ -63,16 +63,16 @@ describe("Voting Token contract", async function () {
       await expect(result.toNumber()).to.be.equal(1);
     });
 
-    // it("AddressOne has reached his voting limit, tried voting for [0]", async function () {
-    //   const candidateName = await testData.arrCandidatesNames[0]
-    //   await expect(hardhatToken.connect(addr1).vote(candidateName)).to.be.reverted;
-    // });
+    it("AddressOne has reached his voting limit, tried voting for [0]", async function () {
+      const candidateName = await testData.arrCandidatesNames[0]
+      await expect(hardhatToken.connect(addr1).vote(candidateName)).to.be.reverted;
+    });
 
-    // it("Get results", async function () {
-    //   await hardhatToken.calculateResults()
-    //   const result = await hardhatToken.getResults() 
-    //   console.log(result);
-    // });
+    it("Get results", async function () {
+      await hardhatToken.calculateResults()
+      const result = await hardhatToken.getResults() 
+      console.log(result);
+    });
 
     // it("Get results", async function () {
     //   console.log(testData.arrCandidatesNames);
