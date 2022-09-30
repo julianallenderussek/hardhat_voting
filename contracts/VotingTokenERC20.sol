@@ -70,11 +70,11 @@ contract VotingTokenERC20 {
     }
 
     function calculateResults() public {
-        uint[numCandidates] memory newResults;   
+        uint[] memory list = new uint[](numCandidates);  
         for (uint i = 0 ; i < numCandidates; i++) {
             
         }
-        results = newResults;
+        results = list;
     }
 
 
