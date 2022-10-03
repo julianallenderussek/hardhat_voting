@@ -1,0 +1,9 @@
+
+tasks:
+  - init: yarn install
+
+
+
+vscode:
+  extensions:
+    - PenumbraTheme.penumbra
